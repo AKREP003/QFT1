@@ -1,3 +1,5 @@
+import abdulfatir.jcomplexnumber.ComplexNumber;
+
 public class Field {
 
     public double[] positionMean = new double[2];
@@ -6,6 +8,10 @@ public class Field {
 
     public double uncertainty = 1;
     public static int planck = 2;
+
+    public static int c = 2;
+
+
 
     public int scale = 10;
 
@@ -16,6 +22,16 @@ public class Field {
         double z = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
 
         return mu + sigma * z;
+    }
+
+    public static ComplexNumber exp(ComplexNumber z) {
+        double a = z.getRe();
+        double b = z.getIm();
+        double expA = Math.exp(a);
+        return new ComplexNumber(
+                expA * Math.cos(b),
+                expA * Math.sin(b)
+        );
     }
 
     public Field measure() {
@@ -35,5 +51,7 @@ public class Field {
 
         return fieldBuffer;
     }
+
+    public double action(double time) {return 0;}
 
 }

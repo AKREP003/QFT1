@@ -2,21 +2,26 @@
 import abdulfatir.jcomplexnumber.ComplexNumber;
 import processing.core.PApplet;
 
+import java.util.Arrays;
+
 
 public class Main {
 
     public static void main(String[] args) {
         System.out.println("Hello World, Java app");
 
-        Fermion f = new Fermion();
-
-        f.components[0] = new ComplexNumber(1,1);
+        Electron electron = new Electron();
 
 
+        while (true) {
 
-        System.out.println(Field.sample(0,2));
+            electron.evolveSpin(0.1);
 
-        Display.main();
+            System.out.println(Arrays.toString(electron.components));
+
+        }
+
+        //Display.main();
 
     }
 }
