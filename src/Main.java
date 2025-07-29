@@ -16,5 +16,7 @@ public class Main {
 
         System.out.println(Field.sample(0,2));
 
+        Display.main();
+
     }
 }

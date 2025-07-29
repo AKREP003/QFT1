@@ -4,9 +4,10 @@ public class Field {
 
     public double[] momentumMean = new double[2];
 
-    public float uncertainty = 1;
-
+    public double uncertainty = 1;
     public static int planck = 2;
+
+    public int scale = 10;
 
     public static double sample(double mu, double sigma) {
         double u1 = Math.random();
@@ -23,8 +24,8 @@ public class Field {
 
         fieldBuffer.uncertainty = this.uncertainty;
 
-        double positionDev = this.uncertainty;
-        double momentumDev = Field.planck / (2.0 * positionDev);
+        double positionDev = this.uncertainty * this.scale;
+        double momentumDev = (Field.planck / (2.0 * this.uncertainty)) * this.scale;
 
         fieldBuffer.momentumMean[0] = sample(this.momentumMean[0], momentumDev);
         fieldBuffer.momentumMean[1] = sample(this.momentumMean[1], momentumDev);
