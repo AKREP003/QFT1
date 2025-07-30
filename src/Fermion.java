@@ -6,11 +6,8 @@ public class Fermion extends Field{
 
     public ComplexNumber[] components = new ComplexNumber[4];
     public double charge = 0;
-    public double mass = 0;
-
-
-
-
+    public double mass = 1;
+    public double energy = mass * Math.pow(c, 2);
 
     public ComplexNumber[] getComponents(){return this.components;}
 
@@ -22,10 +19,16 @@ public class Fermion extends Field{
 
     public double getMass() {return this.mass;}
     public double getCharge() {return this.charge;}
+    public double[] getMomentumMean(){return this.momentumMean;}
+    public void setMomentumMean(int i, double v){this.momentumMean[i] = v;}
+    public double[] getPositionMean(){return this.positionMean;}
+    public void setPositionMean(int i, double v){this.positionMean[i] = v;}
+
+    public double getEnergy() {return this.energy;}
 
     public void evolveSpin(double time) {
 
-        double energy = getMass() * Math.pow(Field.c, 2);
+        double energy = getEnergy();
         double phaseArg = energy * time / Field.planck;
 
         ComplexNumber phase;
@@ -44,9 +47,37 @@ public class Fermion extends Field{
         }
     }
 
-    public double getDensity() {
+    public double getDiracDensity() {
 
-        return 0;
+        ComplexNumber[] psi = getComponents();
+        ComplexNumber[] psiAdjoint = GammaMatrices.getAdjoint(psi);
+
+        double E = getEnergy();
+
+        ComplexNumber gammaPsi[] = GammaMatrices.multiplyByMatrix(psi, GammaMatrices.gamma0);
+        ComplexNumber kinetic = GammaMatrices.multiplyByVector(psiAdjoint, gammaPsi);
+        kinetic.multiply(new ComplexNumber(E, 0)); // Apply E
+
+
+        ComplexNumber matter = new ComplexNumber(getMass() * Math.pow(c, 2), 0);
+        ComplexNumber adjDotPsi = GammaMatrices.multiplyByVector(psiAdjoint, psi);
+        matter.multiply(adjDotPsi);
+
+        kinetic.subtract(matter);
+
+        return kinetic.getRe();
+    }
+
+
+    public void updatePosition(double time) {
+
+        double[] momentum = getMomentumMean();
+        double[] position = getPositionMean();
+
+        double energy = getEnergy();
+
+        setPositionMean(0, position[0] + ((momentum[1] * Math.pow(c, 2)) / energy) * time);
+        setPositionMean(1, position[1] + ((momentum[2] * Math.pow(c, 2)) / energy) * time);
 
     }
 

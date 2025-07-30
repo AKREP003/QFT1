@@ -11,6 +11,17 @@ public class Electron extends Fermion{
             new ComplexNumber(0,0)
     };
 
+    public double[] momentumMean = {
+
+            this.mass * c,
+            0,
+            0,
+            0
+
+    };
+
+    public double energy = mass * Math.pow(c, 2);
+
     @Override
     public void multiplyComponent(int i, ComplexNumber z) {
 
@@ -24,4 +35,16 @@ public class Electron extends Fermion{
     public double getCharge() {return this.charge;}
     @Override
     public ComplexNumber[] getComponents(){return this.components;}
+    @Override
+    public double[] getMomentumMean(){return this.momentumMean;}
+
+    @Override
+    public double getEnergy() {return this.energy;}
+
+    @Override
+    public void setPositionMean(int i, double v){this.positionMean[i] = v;}
+
+    @Override
+    public void setMomentumMean(int i, double v){this.momentumMean[i] = v;}
+
 }

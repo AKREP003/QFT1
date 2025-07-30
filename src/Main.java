@@ -19,6 +19,8 @@ public class Main {
 
             System.out.println(Arrays.toString(electron.components));
 
+            System.out.println(electron.getDiracDensity());
+
         }
 
 

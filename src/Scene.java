@@ -7,6 +7,6 @@ public class Scene {
     public double timePerStep = 1;
     public double scale = 10;
 
-
+    //implement additive amplitude over grid logic
 
 }

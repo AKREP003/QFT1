@@ -127,5 +127,25 @@ public class GammaMatrices {
         return buffer;
     }
 
+    public static ComplexNumber[] multiplyByScalar(ComplexNumber x, ComplexNumber[] v) {
+
+        ComplexNumber[] buffer = new ComplexNumber[v.length];
+
+        for (int i = 0; i < v.length; i++){
+
+            ComplexNumber multBuffer = new ComplexNumber();
+
+            multBuffer.add(v[i]);
+
+            multBuffer.multiply(x);
+
+            buffer[i].add(multBuffer);
+
+        }
+
+        return buffer;
+
+    }
+
 
 }
