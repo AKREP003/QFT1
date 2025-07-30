@@ -36,7 +36,7 @@ public class GammaMatrices {
             { ZERO,    ONE,     ZERO,     ZERO }
     };
 
-    public static ComplexNumber[] getConjugateComponents(ComplexNumber[] original) {
+    public static ComplexNumber[] getConjugate(ComplexNumber[] original) {
 
         ComplexNumber[] buffer = new ComplexNumber[4];
 
@@ -44,12 +44,88 @@ public class GammaMatrices {
             buffer[i] = original[i].conjugate();
         }
 
-        buffer[2].multiply(new ComplexNumber(-1, 0));
-        buffer[3].multiply(new ComplexNumber(-1, 0));
-
         return buffer;
     }
 
+    public static ComplexNumber[] multiplyByMatrix(ComplexNumber[] v, ComplexNumber[][] A) {
+
+        ComplexNumber[] buffer = new ComplexNumber[A.length];
+
+        for (int i = 0; i < A.length; i++) {
+
+            ComplexNumber rowBuffer = new ComplexNumber();
+
+            for (int j = 0; j < A[i].length; j++){
+
+                ComplexNumber addBuffer = new ComplexNumber();
+
+                addBuffer.add(v[j]);
+
+                addBuffer.multiply(A[i][j]);
+
+                rowBuffer.add(addBuffer);
+
+            }
+
+            buffer[i] = rowBuffer;
+
+        }
+
+        return buffer;
+
+    }
+
+    public static ComplexNumber[] multiplyRowByMatrix(ComplexNumber[] row, ComplexNumber[][] matrix) {
+        ComplexNumber[] result = new ComplexNumber[matrix[0].length];
+
+        for (int j = 0; j < matrix[0].length; j++) {
+            ComplexNumber sum = new ComplexNumber();
+            for (int i = 0; i < row.length; i++) {
+                ComplexNumber term = new ComplexNumber(row[i].getRe(), row[i].getIm());
+                term.multiply(matrix[i][j]);
+                sum.add(term);
+            }
+            result[j] = sum;
+        }
+
+        return result;
+    }
+
+
+    public static ComplexNumber[] getAdjoint(ComplexNumber[] psi) {
+
+        return multiplyRowByMatrix(getConjugate(psi), gamma0);
+
+    }
+
+    public static ComplexNumber exp(ComplexNumber z) {
+        double a = z.getRe();
+        double b = z.getIm();
+        double expA = Math.exp(a);
+        return new ComplexNumber(
+                expA * Math.cos(b),
+                expA * Math.sin(b)
+        );
+    }
+
+    public static ComplexNumber multiplyByVector(ComplexNumber[] v1, ComplexNumber[] v2) {
+
+        ComplexNumber buffer = new ComplexNumber();
+
+        for (int i = 0; i < v1.length; i++){
+
+            ComplexNumber multBuffer = new ComplexNumber();
+
+            multBuffer.add(v1[i]);
+
+            multBuffer.multiply(v2[i]);
+
+            buffer.add(multBuffer);
+
+        }
+
+        return buffer;
+    }
 
 
 }

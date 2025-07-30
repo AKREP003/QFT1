@@ -44,4 +44,10 @@ public class Fermion extends Field{
         }
     }
 
+    public double getDensity() {
+
+        return 0;
+
+    }
+
 }
