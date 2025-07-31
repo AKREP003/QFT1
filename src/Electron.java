@@ -42,6 +42,9 @@ public class Electron extends Fermion{
     public double getEnergy() {return this.energy;}
 
     @Override
+    public void setEnergy(double e) {this.energy = e;}
+
+    @Override
     public void setPositionMean(int i, double v){this.positionMean[i] = v;}
 
     @Override

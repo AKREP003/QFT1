@@ -26,6 +26,32 @@ public class Fermion extends Field{
 
     public double getEnergy() {return this.energy;}
 
+    public void setEnergy(double e) {this.energy = e;}
+
+    public void updateEnergy() {
+
+        double sumBuffer = 0;
+
+        double[] momentum = getMomentumMean();
+
+        for (int i = 1; i < 4; i++) {
+
+            sumBuffer += Math.pow(momentum[i], 2);
+
+        }
+
+        sumBuffer = sumBuffer * Math.pow(Field.c, 2);
+
+        sumBuffer += Math.pow(getMass(), 2) * Math.pow(Field.c, 4);
+
+        sumBuffer = Math.sqrt(sumBuffer);
+
+        setEnergy(sumBuffer);
+
+        setMomentumMean(0, sumBuffer / Field.c);
+
+    }
+
     public void evolveSpin(double time) {
 
         double energy = getEnergy();
@@ -52,6 +78,8 @@ public class Fermion extends Field{
         ComplexNumber[] psi = getComponents();
         ComplexNumber[] psiAdjoint = GammaMatrices.getAdjoint(psi);
 
+        updateEnergy();
+
         double E = getEnergy();
 
         ComplexNumber gammaPsi[] = GammaMatrices.multiplyByMatrix(psi, GammaMatrices.gamma0);
@@ -73,6 +101,8 @@ public class Fermion extends Field{
 
         double[] momentum = getMomentumMean();
         double[] position = getPositionMean();
+
+        updateEnergy();
 
         double energy = getEnergy();
 
