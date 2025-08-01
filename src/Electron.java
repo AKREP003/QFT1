@@ -30,6 +30,13 @@ public class Electron extends Fermion{
     }
 
     @Override
+    public void addComponent(int i, ComplexNumber z) {
+
+        this.components[i].add(z);
+
+    }
+
+    @Override
     public double getMass() {return this.mass;}
     @Override
     public double getCharge() {return this.charge;}

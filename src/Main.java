@@ -15,11 +15,10 @@ public class Main {
 
         while (true) {
 
-            electron.evolveSpin(0.1);
+
 
             System.out.println(Arrays.toString(electron.components));
 
-            System.out.println(electron.getDiracDensity());
 
         }
 

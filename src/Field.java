@@ -11,6 +11,8 @@ public class Field {
 
     public static int c = 2;
 
+    public static int e = 1;
+
     public double energy = 0;
 
     public int scale = 10;

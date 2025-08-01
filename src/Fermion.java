@@ -17,6 +17,12 @@ public class Fermion extends Field{
 
     }
 
+    public void addComponent(int i, ComplexNumber z) {
+
+        this.components[i].add(z);
+
+    }
+
     public double getMass() {return this.mass;}
     public double getCharge() {return this.charge;}
     public double[] getMomentumMean(){return this.momentumMean;}
@@ -52,39 +58,34 @@ public class Fermion extends Field{
 
     }
 
-    public void evolveSpin(double time) {
 
-        double energy = getEnergy();
-        double phaseArg = energy * time / Field.planck;
 
-        ComplexNumber phase;
-
-        if (getCharge() < 0) {
-
-            phase = new ComplexNumber(Math.cos(-phaseArg), Math.sin(-phaseArg));
-            multiplyComponent(0, phase);
-            multiplyComponent(1, phase);
-
-        } else {
-
-            phase = new ComplexNumber(Math.cos(phaseArg), Math.sin(phaseArg));
-            multiplyComponent(2, phase);
-            multiplyComponent(3, phase);
-        }
-    }
-
-    public double getDiracDensity() {
+    public double getDiracDensity(ComplexNumber[] D, double[] A) {
 
         ComplexNumber[] psi = getComponents();
         ComplexNumber[] psiAdjoint = GammaMatrices.getAdjoint(psi);
 
         updateEnergy();
 
-        double E = getEnergy();
+        ComplexNumber kinetic = new ComplexNumber(0,0);
 
-        ComplexNumber gammaPsi[] = GammaMatrices.multiplyByMatrix(psi, GammaMatrices.gamma0);
-        ComplexNumber kinetic = GammaMatrices.multiplyByVector(psiAdjoint, gammaPsi);
-        kinetic.multiply(new ComplexNumber(E, 0)); // Apply E
+        for (int i = 0; i < 4; i++) {
+
+            ComplexNumber[] changeBuffer = GammaMatrices.multiplyByMatrix(psi, GammaMatrices.gamma[i]);
+
+            ComplexNumber total = new ComplexNumber();
+
+            total.add(D[i]);
+
+            total.add(new ComplexNumber(0, Field.e * A[i]));
+
+            changeBuffer = GammaMatrices.multiplyByScalar(total, changeBuffer);
+
+            changeBuffer = GammaMatrices.multiplyByScalar(new ComplexNumber(0,1), changeBuffer);
+
+            kinetic.add(GammaMatrices.multiplyByVector(psiAdjoint, changeBuffer));
+
+        }
 
 
         ComplexNumber matter = new ComplexNumber(getMass() * Math.pow(c, 2), 0);

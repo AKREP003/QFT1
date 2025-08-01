@@ -8,33 +8,33 @@ public class GammaMatrices {
     static final ComplexNumber I = new ComplexNumber(0, 1);
     static final ComplexNumber NEG_I = new ComplexNumber(0, -1);
 
-    public static final ComplexNumber[][] gamma0 = {
+    public static final ComplexNumber[][][] gamma = {{
             { ONE,     ZERO,    ZERO,     ZERO },
             { ZERO,    ONE,     ZERO,     ZERO },
             { ZERO,    ZERO,    NEG_ONE,  ZERO },
             { ZERO,    ZERO,    ZERO,     NEG_ONE }
-    };
+    },
 
-    public static final ComplexNumber[][] gamma1 = {
+    {
             { ZERO,    ZERO,    ZERO,     NEG_ONE },
             { ZERO,    ZERO,    NEG_ONE,  ZERO },
             { ZERO,    ONE,     ZERO,     ZERO },
             { ONE,     ZERO,    ZERO,     ZERO }
-    };
+    },
 
-    public static final ComplexNumber[][] gamma2 = {
+    {
             { ZERO,    ZERO,    ZERO,     I },
             { ZERO,    ZERO,    NEG_I,    ZERO },
             { ZERO,    I,       ZERO,     ZERO },
             { NEG_I,   ZERO,    ZERO,     ZERO }
-    };
+    },
 
-    public static final ComplexNumber[][] gamma3 = {
+    {
             { ZERO,    ZERO,    ONE,      ZERO },
             { ZERO,    ZERO,    ZERO,     NEG_ONE },
             { NEG_ONE, ZERO,    ZERO,     ZERO },
             { ZERO,    ONE,     ZERO,     ZERO }
-    };
+    }};
 
     public static ComplexNumber[] getConjugate(ComplexNumber[] original) {
 
@@ -94,7 +94,7 @@ public class GammaMatrices {
 
     public static ComplexNumber[] getAdjoint(ComplexNumber[] psi) {
 
-        return multiplyRowByMatrix(getConjugate(psi), gamma0);
+        return multiplyRowByMatrix(getConjugate(psi), gamma[0]);
 
     }
 
