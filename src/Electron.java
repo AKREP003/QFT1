@@ -46,7 +46,7 @@ public class Electron extends Fermion{
     public double[] getMomentumMean(){return this.momentumMean;}
 
     @Override
-    public double getEnergy() {return this.energy;}
+    public double getEnergy() {updateEnergy(); return this.energy;}
 
     @Override
     public void setEnergy(double e) {this.energy = e;}

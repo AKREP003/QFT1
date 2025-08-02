@@ -139,6 +139,8 @@ public class GammaMatrices {
 
             multBuffer.multiply(x);
 
+            buffer[i] = new ComplexNumber();
+
             buffer[i].add(multBuffer);
 
         }
@@ -146,6 +148,5 @@ public class GammaMatrices {
         return buffer;
 
     }
-
 
 }

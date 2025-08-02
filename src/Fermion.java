@@ -30,7 +30,7 @@ public class Fermion extends Field{
     public double[] getPositionMean(){return this.positionMean;}
     public void setPositionMean(int i, double v){this.positionMean[i] = v;}
 
-    public double getEnergy() {return this.energy;}
+    public double getEnergy() {updateEnergy(); return this.energy;}
 
     public void setEnergy(double e) {this.energy = e;}
 

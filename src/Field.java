@@ -9,7 +9,7 @@ public class Field {
     public double uncertainty = 1;
     public static int planck = 2;
 
-    public static int c = 2;
+    public static int c = 1;
 
     public static int e = 1;
 
