@@ -12,19 +12,45 @@ public class Main {
 
         Electron electron = new Electron();
 
+        double t = 0;
 
+        double sum = 0;
+
+        double delta = 0.0001;
 
         while (true) {
 
-            double dense = electron.getDiracDensity(new ComplexNumber[] {new ComplexNumber(0, -electron.getEnergy()), new ComplexNumber(), new ComplexNumber(),new ComplexNumber()}, new double[]{0,0,0,0});
+            ComplexNumber[] buffer = new ComplexNumber[4];
 
-            System.out.println(dense);
+            for (int i = 0; i < 4; i++) {
 
-            System.out.println(Arrays.toString(electron.components));
+                buffer[i] = electron.components[i].copy();
 
+            }
+
+            electron.components[0] = GammaMatrices.exp(new ComplexNumber(0, -electron.getEnergy() * t / Field.planck));
+
+            for (int i = 0; i < 4; i++) {
+
+                buffer[i].subtract(electron.components[i]);
+
+                buffer[i].multiply(new ComplexNumber(-1, 0));
+
+            }
+
+            double dense = electron.getDiracDensity(buffer, new double[]{0,0,0,0}, delta) * delta;
+
+            sum += dense;
+
+            if (t > 10) {
+                break;
+            }
+
+            t = t + delta;
 
         }
 
+        System.out.println(sum);
 
 
     }

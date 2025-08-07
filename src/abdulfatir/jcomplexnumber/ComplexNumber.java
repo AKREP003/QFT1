@@ -399,4 +399,10 @@ public class ComplexNumber
 		}
 		return out;
 	}
+
+    public ComplexNumber copy() {
+
+		return new ComplexNumber(this.getRe(), this.getIm());
+
+    }
 }

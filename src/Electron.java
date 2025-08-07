@@ -49,6 +49,9 @@ public class Electron extends Fermion{
     public double getEnergy() {updateEnergy(); return this.energy;}
 
     @Override
+    public double getStaticEnergy() { return getMass() * Math.pow(Field.c, 2);}
+
+    @Override
     public void setEnergy(double e) {this.energy = e;}
 
     @Override

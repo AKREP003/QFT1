@@ -32,6 +32,8 @@ public class Fermion extends Field{
 
     public double getEnergy() {updateEnergy(); return this.energy;}
 
+    public double getStaticEnergy() { return getMass() * Math.pow(Field.c, 2);}
+
     public void setEnergy(double e) {this.energy = e;}
 
     public void updateEnergy() {
@@ -60,7 +62,7 @@ public class Fermion extends Field{
 
 
 
-    public double getDiracDensity(ComplexNumber[] D, double[] A) {
+    public double getDiracDensity(ComplexNumber[] D, double[] A, double delta) {
 
         ComplexNumber[] psi = getComponents();
         ComplexNumber[] psiAdjoint = GammaMatrices.getAdjoint(psi);
@@ -88,7 +90,7 @@ public class Fermion extends Field{
         }
 
 
-        ComplexNumber matter = new ComplexNumber(getMass() * Math.pow(c, 2), 0);
+        ComplexNumber matter = new ComplexNumber(getMass() * Math.pow(c, 2) * delta, 0);
         ComplexNumber adjDotPsi = GammaMatrices.multiplyByVector(psiAdjoint, psi);
         matter.multiply(adjDotPsi);
 
