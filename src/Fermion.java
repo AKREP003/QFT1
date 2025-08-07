@@ -2,12 +2,18 @@ import abdulfatir.jcomplexnumber.ComplexNumber;
 
 import java.util.Arrays;
 
-public class Fermion extends Field{
+public class Fermion{
+    
+    public double[] momentumMean = new double[4];
 
+    public double[] positionMean = new double[2];
+    
     public ComplexNumber[] components = new ComplexNumber[4];
     public double charge = 0;
     public double mass = 1;
-    public double energy = mass * Math.pow(c, 2);
+    public double energy = mass * Math.pow(Scene.c, 2);
+
+    public double uncertainty = 1;
 
     public ComplexNumber[] getComponents(){return this.components;}
 
@@ -32,7 +38,7 @@ public class Fermion extends Field{
 
     public double getEnergy() {updateEnergy(); return this.energy;}
 
-    public double getStaticEnergy() { return getMass() * Math.pow(Field.c, 2);}
+    public double getStaticEnergy() { return getMass() * Math.pow(Scene.c, 2);}
 
     public void setEnergy(double e) {this.energy = e;}
 
@@ -48,15 +54,15 @@ public class Fermion extends Field{
 
         }
 
-        sumBuffer = sumBuffer * Math.pow(Field.c, 2);
+        sumBuffer = sumBuffer * Math.pow(Scene.c, 2);
 
-        sumBuffer += Math.pow(getMass(), 2) * Math.pow(Field.c, 4);
+        sumBuffer += Math.pow(getMass(), 2) * Math.pow(Scene.c, 4);
 
         sumBuffer = Math.sqrt(sumBuffer);
 
         setEnergy(sumBuffer);
 
-        setMomentumMean(0, sumBuffer / Field.c);
+        setMomentumMean(0, sumBuffer / Scene.c);
 
     }
 
@@ -79,7 +85,7 @@ public class Fermion extends Field{
 
             total.add(D[i]);
 
-            total.add(new ComplexNumber(0, Field.e * A[i]));
+            total.add(new ComplexNumber(0, Scene.e * A[i]));
 
             changeBuffer = GammaMatrices.multiplyByScalar(total, changeBuffer);
 
@@ -90,7 +96,7 @@ public class Fermion extends Field{
         }
 
 
-        ComplexNumber matter = new ComplexNumber(getMass() * Math.pow(c, 2) * delta, 0);
+        ComplexNumber matter = new ComplexNumber(getMass() * Math.pow(Scene.c, 2) * delta, 0);
         ComplexNumber adjDotPsi = GammaMatrices.multiplyByVector(psiAdjoint, psi);
         matter.multiply(adjDotPsi);
 
@@ -109,8 +115,40 @@ public class Fermion extends Field{
 
         double energy = getEnergy();
 
-        setPositionMean(0, position[0] + ((momentum[1] * Math.pow(c, 2)) / energy) * time);
-        setPositionMean(1, position[1] + ((momentum[2] * Math.pow(c, 2)) / energy) * time);
+        setPositionMean(0, position[0] + ((momentum[1] * Math.pow(Scene.c, 2)) / energy) * time);
+        setPositionMean(1, position[1] + ((momentum[2] * Math.pow(Scene.c, 2)) / energy) * time);
+
+    }
+
+    public static double sample(double mu, double sigma) {
+        double u1 = Math.random();
+        double u2 = Math.random();
+
+        double z = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+
+        return mu + sigma * z;
+    }
+
+
+
+    public double[] measure() {
+
+        double[] positionBuffer = new double[] {0,0};
+
+        //SceneBuffer.uncertainty = this.uncertainty;
+
+        double positionDev = this.uncertainty * Scene.scale;
+        //double momentumDev = (Scene.planck / (2.0 * this.uncertainty)) * this.scale;
+
+        //SceneBuffer.momentumMean[0] = sample(this.momentumMean[0], momentumDev);
+        //SceneBuffer.momentumMean[1] = sample(this.momentumMean[1], momentumDev);
+        //SceneBuffer.momentumMean[2] = sample(this.momentumMean[2], momentumDev);
+        //SceneBuffer.momentumMean[3] = sample(this.momentumMean[3], momentumDev);
+
+        positionBuffer[0] = sample(this.positionMean[0], positionDev);
+        positionBuffer[1] = sample(this.positionMean[1], positionDev);
+
+        return positionBuffer;
 
     }
 

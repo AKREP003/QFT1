@@ -28,7 +28,7 @@ public class Main {
 
             }
 
-            electron.components[0] = GammaMatrices.exp(new ComplexNumber(0, -electron.getEnergy() * t / Field.planck));
+            electron.components[0] = GammaMatrices.exp(new ComplexNumber(0, -electron.getEnergy() * t / Scene.planck));
 
             for (int i = 0; i < 4; i++) {
 

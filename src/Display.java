@@ -16,17 +16,17 @@ public class Display extends PApplet{
     public void draw() {
         background(0);
 
-        Field p = new Field();
+        Fermion p = new Electron();
 
         p.positionMean[0] = 500;
         p.positionMean[1] = 500;
 
-        p.scale = 20;
+        Scene.scale = 20;
 
-        Field pM = p.measure();
+        double[] pM = p.measure();
 
 
-        circle((float)(pM.positionMean[0]), (float)(pM.positionMean[1]), 10);
+        circle((float)(pM[0]), (float)(pM[1]), 10);
 
 
     }

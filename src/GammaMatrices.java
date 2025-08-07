@@ -149,4 +149,32 @@ public class GammaMatrices {
 
     }
 
+    public static ComplexNumber[] complexify(double[] v1) {
+
+        ComplexNumber[] buffer = new ComplexNumber[v1.length];
+
+        for (int i = 0; i < v1.length; i++) {
+
+            buffer[i] = new ComplexNumber(v1[i], 0);
+        }
+
+        return buffer;
+
+    }
+
+    public static ComplexNumber[] subtractFromVector(ComplexNumber[] v1, ComplexNumber[] v2) {
+
+        ComplexNumber[] buffer = new ComplexNumber[v1.length];
+
+        for (int i = 0; i < v1.length; i++) {
+
+            buffer[i].add(v1[i]);
+
+            buffer[i].subtract(v2[i]);
+
+        }
+
+        return buffer;
+    }
+
 }

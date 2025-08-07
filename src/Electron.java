@@ -13,14 +13,14 @@ public class Electron extends Fermion{
 
     public double[] momentumMean = {
 
-            this.mass * c,
+            this.mass * Scene.c,
             0,
             0,
             0
 
     };
 
-    public double energy = mass * Math.pow(c, 2);
+    public double energy = mass * Math.pow(Scene.c, 2);
 
     @Override
     public void multiplyComponent(int i, ComplexNumber z) {
@@ -49,7 +49,7 @@ public class Electron extends Fermion{
     public double getEnergy() {updateEnergy(); return this.energy;}
 
     @Override
-    public double getStaticEnergy() { return getMass() * Math.pow(Field.c, 2);}
+    public double getStaticEnergy() { return getMass() * Math.pow(Scene.c, 2);}
 
     @Override
     public void setEnergy(double e) {this.energy = e;}
