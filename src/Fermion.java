@@ -155,15 +155,15 @@ public class Fermion{
 
         double[] positionBuffer = new double[] {0,0};
 
-        //SceneBuffer.uncertainty = this.uncertainty;
+        buffer.uncertainty = this.uncertainty;
 
         double positionDev = buffer.uncertainty * Scene.scale;
-        //double momentumDev = (Scene.planck / (2.0 * this.uncertainty)) * this.scale;
+        double momentumDev = (Scene.planck / (2.0 * this.uncertainty)) * Scene.scale;
 
-        //SceneBuffer.momentumMean[0] = sample(this.momentumMean[0], momentumDev);
-        //SceneBuffer.momentumMean[1] = sample(this.momentumMean[1], momentumDev);
-        //SceneBuffer.momentumMean[2] = sample(this.momentumMean[2], momentumDev);
-        //SceneBuffer.momentumMean[3] = sample(this.momentumMean[3], momentumDev);
+        buffer.momentumMean[0] = sample(this.momentumMean[0], momentumDev);
+        buffer.momentumMean[1] = sample(this.momentumMean[1], momentumDev);
+        buffer.momentumMean[2] = sample(this.momentumMean[2], momentumDev);
+        buffer.momentumMean[3] = sample(this.momentumMean[3], momentumDev);
 
         buffer.positionMean[0] = sample(buffer.positionMean[0], positionDev);
         buffer.positionMean[1] = sample(buffer.positionMean[1], positionDev);
