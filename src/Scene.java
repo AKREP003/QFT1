@@ -17,7 +17,7 @@ public class Scene {
 
     public double samplePerStep = 2;
 
-    public double[][] lattice = new double[500][500];
+    public ComplexNumber[][] lattice = new ComplexNumber[500][500];
 
     public Fermion[] getFields() {
         return fields;
@@ -46,17 +46,19 @@ public class Scene {
         }
     }
 
-    ComplexNumber[] getStepChange(Fermion f){
+    double density(Fermion f) {return 0;}
 
-        double[] positionBuffer = f.positionMean.clone();
+    ComplexNumber feynman(double S) {return GammaMatrices.exp(new ComplexNumber(S, 0));}
 
-        double[] nextPosition = f.measure();
+    void actionSum(double current, Fermion f){
 
-        ComplexNumber[] path = GammaMatrices.subtractFromVector(GammaMatrices.complexify(nextPosition), GammaMatrices.complexify(positionBuffer));
+        Fermion next = f.measure();
 
-        ComplexNumber divisor = new ComplexNumber(1.0 / this.timePerStep, 0);
+        double nextDensity = this.density(next);
 
-        return GammaMatrices.multiplyByScalar(divisor, path);
+        ComplexNumber act = feynman(current + (Math.min(current, nextDensity) * this.timePerStep) + (Math.abs(nextDensity - nextDensity) / 2));
+
+        this.lattice[(int)next.positionMean[0]][(int) next.positionMean[1]] = act;
 
     }
 

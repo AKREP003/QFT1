@@ -15,7 +15,25 @@ public class Fermion{
 
     public double uncertainty = 1;
 
-    public ComplexNumber[] getComponents(){return this.components;}
+    public Fermion clone() {
+
+        Fermion buffer = new Fermion();
+
+        buffer.components = getComponents();
+
+        buffer.mass = getMass();
+
+        buffer.positionMean = getPositionMean();
+
+        buffer.energy = getEnergy();
+
+        buffer.charge = getCharge();
+
+        return buffer;
+
+    }
+
+    public ComplexNumber[] getComponents(){return this.components.clone();}
 
     public void multiplyComponent(int i, ComplexNumber z) {
 
@@ -31,9 +49,9 @@ public class Fermion{
 
     public double getMass() {return this.mass;}
     public double getCharge() {return this.charge;}
-    public double[] getMomentumMean(){return this.momentumMean;}
+    public double[] getMomentumMean(){return this.momentumMean.clone();}
     public void setMomentumMean(int i, double v){this.momentumMean[i] = v;}
-    public double[] getPositionMean(){return this.positionMean;}
+    public double[] getPositionMean(){return this.positionMean.clone();}
     public void setPositionMean(int i, double v){this.positionMean[i] = v;}
 
     public double getEnergy() {updateEnergy(); return this.energy;}
@@ -131,13 +149,15 @@ public class Fermion{
 
 
 
-    public double[] measure() {
+    public Fermion measure() {
+
+        Fermion buffer = this.clone();
 
         double[] positionBuffer = new double[] {0,0};
 
         //SceneBuffer.uncertainty = this.uncertainty;
 
-        double positionDev = this.uncertainty * Scene.scale;
+        double positionDev = buffer.uncertainty * Scene.scale;
         //double momentumDev = (Scene.planck / (2.0 * this.uncertainty)) * this.scale;
 
         //SceneBuffer.momentumMean[0] = sample(this.momentumMean[0], momentumDev);
@@ -145,10 +165,10 @@ public class Fermion{
         //SceneBuffer.momentumMean[2] = sample(this.momentumMean[2], momentumDev);
         //SceneBuffer.momentumMean[3] = sample(this.momentumMean[3], momentumDev);
 
-        positionBuffer[0] = sample(this.positionMean[0], positionDev);
-        positionBuffer[1] = sample(this.positionMean[1], positionDev);
+        buffer.positionMean[0] = sample(buffer.positionMean[0], positionDev);
+        buffer.positionMean[1] = sample(buffer.positionMean[1], positionDev);
 
-        return positionBuffer;
+        return buffer;
 
     }
 
