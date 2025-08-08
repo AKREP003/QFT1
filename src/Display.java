@@ -23,10 +23,10 @@ public class Display extends PApplet{
 
         Scene.scale = 20;
 
-        double[] pM = p.measure();
+        Fermion pM = p.measure();
 
 
-        circle((float)(pM[0]), (float)(pM[1]), 10);
+        circle((float)(pM.positionMean[0]), (float)(pM.positionMean[1]), 10);
 
 
     }

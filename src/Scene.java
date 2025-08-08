@@ -58,7 +58,7 @@ public class Scene {
 
         ComplexNumber act = feynman(current + (Math.min(current, nextDensity) * this.timePerStep) + (Math.abs(nextDensity - nextDensity) / 2));
 
-        this.lattice[(int)next.positionMean[0]][(int) next.positionMean[1]] = act;
+        this.lattice[(int)next.positionMean[0]][(int) next.positionMean[1]].add(act);
 
     }
 
