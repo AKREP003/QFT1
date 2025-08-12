@@ -6,7 +6,7 @@ public class Display extends PApplet{
     public int width = 1000;
     public int height = 1000;
 
-
+    singleElectron scene = new singleElectron();
 
     public void settings() {
         size(width, height);
@@ -16,17 +16,26 @@ public class Display extends PApplet{
     public void draw() {
         background(0);
 
-        Fermion p = new Electron();
+        this.scene.sampleFields();
 
-        p.positionMean[0] = 500;
-        p.positionMean[1] = 500;
+        for (int i = 0; i < this.scene.lattice.length; i ++) {
 
-        Scene.scale = 20;
+            for (int j = 0; j < this.scene.lattice[i].length; j ++) {
 
-        Fermion pM = p.measure();
+                if (this.scene.lattice[i][j] != null) {
+
+                    double amplitude = Math.pow(this.scene.lattice[i][j].getRe(), 2) +  Math.pow(this.scene.lattice[i][j].getIm(), 2);
 
 
-        circle((float)(pM.positionMean[0]), (float)(pM.positionMean[1]), 10);
+                    set(300 + i, 300 + j, color(200, 100 , 0));
+
+                    this.scene.lattice[i][j] = null;
+
+                }
+
+            }
+
+        }
 
 
     }

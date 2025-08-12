@@ -5,7 +5,7 @@ public class singleElectron extends Scene
 
     @Override
     public Fermion[] getFields() {
-        return fields;
+        return this.fields;
     }
 
     public Fermion[] fields = new Fermion[] {new Electron()};

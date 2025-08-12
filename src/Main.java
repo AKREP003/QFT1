@@ -12,6 +12,11 @@ public class Main {
 
         Electron electron = new Electron();
 
+        singleElectron scene = new singleElectron();
+
+        scene.sampleFields();
+
+
         double t = 0;
 
         double sum = 0;

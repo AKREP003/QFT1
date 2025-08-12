@@ -1,12 +1,10 @@
 import abdulfatir.jcomplexnumber.ComplexNumber;
 
-import java.util.ArrayList;
-
 public class Scene {
 
     public Fermion[] fields = new Fermion[0];
 
-    public double timePerStep = 1;
+    public static double timePerStep = 1;
     public static double scale = 10;
 
     public static int planck = 2;
@@ -15,12 +13,16 @@ public class Scene {
 
     public static int e = 1;
 
-    public double samplePerStep = 2;
+    public static double samplePerStep = 2;
+
+    public static double stepPerFrame = 10;
+
+    Measurement[] fieldsBuffer = new Measurement[0];
 
     public ComplexNumber[][] lattice = new ComplexNumber[500][500];
 
     public Fermion[] getFields() {
-        return fields;
+        return this.fields;
     }
 
 
@@ -74,27 +76,76 @@ public class Scene {
 
     ComplexNumber feynman(double S) {return GammaMatrices.exp(new ComplexNumber(S, 0));}
 
-    void actionSum(double current, Fermion f){
+    void actionSum(double current, Fermion f, int bufferIndex){
 
         Fermion next = f.measure();
 
         double nextDensity = this.density(next);
 
-        ComplexNumber act = feynman(current + (Math.min(current, nextDensity) * this.timePerStep) + (Math.abs(nextDensity - nextDensity) / 2));
+        double action = current + (Math.min(current, nextDensity) * timePerStep) + (Math.abs(nextDensity - nextDensity) / 2);
 
-        this.lattice[(int)next.positionMean[0]][(int) next.positionMean[1]].add(act);
+        ComplexNumber amplitude = feynman(action);
 
+        if (this.lattice[(int)next.positionMean[0]][(int) next.positionMean[1]] == null) {
+
+            this.lattice[(int)next.positionMean[0]][(int) next.positionMean[1]] = new ComplexNumber();
+
+        }
+
+        this.lattice[(int)next.positionMean[0]][(int) next.positionMean[1]].add(amplitude);
+
+        this.fieldsBuffer[bufferIndex] = new Measurement();
+
+        this.fieldsBuffer[bufferIndex].action = action;
+
+        this.fieldsBuffer[bufferIndex].record = next;
     }
 
     public void sampleFields() {
 
         Fermion[] fieldList = getFields();
 
-        for (Fermion f : fieldList) {
+        fieldsBuffer = new Measurement[this.getFields().length];
 
+        Measurement[] stepBuffer = new Measurement[(int)(fieldList.length)];
 
+        for (int i = 0; i < fieldList.length; i++) {
+
+            stepBuffer[i] = new Measurement();
+
+            stepBuffer[i].record = fieldList[i].clone();
 
         }
+
+        for (int sample = 0; sample < (stepPerFrame + 1); sample++) {
+
+            this.fieldsBuffer = new Measurement[(int)(this.fieldsBuffer.length * samplePerStep)];
+
+            int indexBuffer = 0;
+
+            for (int fermiIndex = 0; fermiIndex < stepBuffer.length; fermiIndex++) {
+
+                for (int i = 0; i < samplePerStep; i++) {
+
+                    this.actionSum(stepBuffer[fermiIndex].action, stepBuffer[fermiIndex].record, indexBuffer);
+
+                    indexBuffer++;
+
+                }
+
+            }
+
+
+            stepBuffer = new Measurement[(int)(fieldsBuffer.length)];
+
+            for (int i = 0; i < fieldsBuffer.length; i++) {
+
+                stepBuffer[i] = fieldsBuffer[i].clone();
+
+            }
+
+        }
+
 
     }
 
