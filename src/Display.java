@@ -16,6 +16,8 @@ public class Display extends PApplet{
     public void draw() {
         background(0);
 
+        this.scene.time = 0;
+
         this.scene.sampleFields();
 
         for (int i = 0; i < this.scene.lattice.length; i ++) {
@@ -24,10 +26,9 @@ public class Display extends PApplet{
 
                 if (this.scene.lattice[i][j] != null) {
 
-                    double amplitude = Math.pow(this.scene.lattice[i][j].getRe(), 2) +  Math.pow(this.scene.lattice[i][j].getIm(), 2);
+                    this.scene.lattice[i][j].multiply(this.scene.lattice[i][j].conjugate());
 
-
-                    set(300 + i, 300 + j, color(200, 100 , 0));
+                    set(300 + i, 300 + j, color((int)this.scene.lattice[i][j].getRe() * 50, 20 , 0));
 
                     this.scene.lattice[i][j] = null;
 

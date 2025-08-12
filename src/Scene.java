@@ -4,8 +4,10 @@ public class Scene {
 
     public Fermion[] fields = new Fermion[0];
 
-    public static double timePerStep = 1;
-    public static double scale = 10;
+    public static double timePerStep = 0.1;
+    public static double scale = 100;
+
+    public double time = 0;
 
     public static int planck = 2;
 
@@ -13,9 +15,9 @@ public class Scene {
 
     public static int e = 1;
 
-    public static double samplePerStep = 2;
+    public static double samplePerStep = 5;
 
-    public static double stepPerFrame = 10;
+    public static double stepPerFrame = 5;
 
     Measurement[] fieldsBuffer = new Measurement[0];
 
@@ -58,7 +60,7 @@ public class Scene {
 
         }
 
-        evolveSpin(this.timePerStep, f);
+        evolveSpin(this.time, f);
 
         for (int i = 0; i < 4; i++) {
 
@@ -68,7 +70,7 @@ public class Scene {
 
         }
 
-        return f.getDiracDensity(buffer, new double[]{0,0,0,0}, this.timePerStep);
+        return f.getDiracDensity(buffer, new double[] {Math.pow(f.positionMean[0] * 0.01, 3),0,0,0}, this.timePerStep);
 
 
 
@@ -79,6 +81,10 @@ public class Scene {
     void actionSum(double current, Fermion f, int bufferIndex){
 
         Fermion next = f.measure();
+
+        if (next.positionMean[0] >= this.lattice.length || 0 > next.positionMean[0]) {return;}
+
+        if (next.positionMean[1] >= this.lattice[0].length || 0 > next.positionMean[1]) {return;}
 
         double nextDensity = this.density(next);
 
@@ -127,6 +133,8 @@ public class Scene {
 
                 for (int i = 0; i < samplePerStep; i++) {
 
+                    if (stepBuffer[fermiIndex] == null) {continue;}
+
                     this.actionSum(stepBuffer[fermiIndex].action, stepBuffer[fermiIndex].record, indexBuffer);
 
                     indexBuffer++;
@@ -138,11 +146,15 @@ public class Scene {
 
             stepBuffer = new Measurement[(int)(fieldsBuffer.length)];
 
-            for (int i = 0; i < fieldsBuffer.length; i++) {
+            for (int i = 0; i < fieldsBuffer.length; i++)
+            {
+                if (fieldsBuffer[i] == null) {continue;}
 
                 stepBuffer[i] = fieldsBuffer[i].clone();
 
             }
+
+            this.time += timePerStep;
 
         }
 
