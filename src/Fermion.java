@@ -13,7 +13,7 @@ public class Fermion{
     public double mass = 1;
     public double energy = mass * Math.pow(Scene.c, 2);
 
-    public double uncertainty = 0.1;
+    public double uncertainty = 1;
 
     public Fermion clone() {
 

@@ -5,7 +5,7 @@ public class Scene {
     public Fermion[] fields = new Fermion[0];
 
     public static double timePerStep = 0.1;
-    public static double scale = 100;
+    public static double scale = 10;
 
     public double time = 0;
 
@@ -70,7 +70,9 @@ public class Scene {
 
         }
 
-        return f.getDiracDensity(buffer, new double[] {Math.pow(f.positionMean[0] * 0.01, 3),0,0,0}, this.timePerStep);
+
+
+        return f.getDiracDensity(buffer, new double[] {0,Math.pow((f.positionMean[0] - 200) * 0.01, 2),0,0}, timePerStep);
 
 
 
@@ -88,7 +90,7 @@ public class Scene {
 
         double nextDensity = this.density(next);
 
-        double action = current + (Math.min(current, nextDensity) * timePerStep) + (Math.abs(nextDensity - nextDensity) / 2);
+        double action = current + (Math.min(current, nextDensity) * timePerStep) + (Math.abs(current - nextDensity) / 2);
 
         ComplexNumber amplitude = feynman(action);
 
@@ -129,13 +131,15 @@ public class Scene {
 
             int indexBuffer = 0;
 
-            for (int fermiIndex = 0; fermiIndex < stepBuffer.length; fermiIndex++) {
+            for (Measurement measurement : stepBuffer) {
 
                 for (int i = 0; i < samplePerStep; i++) {
 
-                    if (stepBuffer[fermiIndex] == null) {continue;}
+                    if (measurement == null) {
+                        continue;
+                    }
 
-                    this.actionSum(stepBuffer[fermiIndex].action, stepBuffer[fermiIndex].record, indexBuffer);
+                    this.actionSum(measurement.action, measurement.record, indexBuffer);
 
                     indexBuffer++;
 
