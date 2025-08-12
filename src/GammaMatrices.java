@@ -101,10 +101,10 @@ public class GammaMatrices {
     public static ComplexNumber exp(ComplexNumber z) {
         double a = z.getRe();
         double b = z.getIm();
-
+        double expA = Math.exp(a) * Scene.scale;
         return new ComplexNumber(
-                Math.cos(a),
-                Math.sin(b)
+                expA * Math.cos(b),
+                expA * Math.sin(b)
         );
     }
 

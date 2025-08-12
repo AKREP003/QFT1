@@ -4,7 +4,7 @@ public class Scene {
 
     public Fermion[] fields = new Fermion[0];
 
-    public static double timePerStep = 0.1;
+    public static double timePerStep = 0.9;
     public static double scale = 10;
 
     public double time = 0;
