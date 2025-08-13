@@ -28,7 +28,7 @@ public class Display extends PApplet{
 
                     this.scene.lattice[i][j].multiply(this.scene.lattice[i][j].conjugate());
 
-                    set(300 + i, 300 + j, color((int)this.scene.lattice[i][j].getRe() * 100, 20 , 0));
+                    set(300 + i, 300 + j, color(((int)this.scene.lattice[i][j].getRe() * 100), 20 , 0));
 
                     this.scene.lattice[i][j] = null;
 
