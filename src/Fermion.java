@@ -93,27 +93,28 @@ public class Fermion{
 
         updateEnergy();
 
-        ComplexNumber kinetic = new ComplexNumber(0,0);
+        ComplexNumber kinetic = new ComplexNumber(0, 0);
 
         for (int i = 0; i < 4; i++) {
 
-            ComplexNumber[] changeBuffer = GammaMatrices.multiplyByMatrix(psi, GammaMatrices.gamma[i]);
 
-            ComplexNumber total = new ComplexNumber();
+            ComplexNumber coupledDerivative = new ComplexNumber(D[i].getRe(), D[i].getIm());
+            coupledDerivative.add(new ComplexNumber(0, Scene.e * A[i]));
 
-            total.add(D[i]);
 
-            total.add(new ComplexNumber(0, Scene.e * A[i]));
+            ComplexNumber[] gammaPsi = GammaMatrices.multiplyByMatrix(psi, GammaMatrices.gamma[i]);
 
-            changeBuffer = GammaMatrices.multiplyByScalar(total, changeBuffer);
 
-            changeBuffer = GammaMatrices.multiplyByScalar(new ComplexNumber(0,1), changeBuffer);
+            ComplexNumber[] changeBuffer = GammaMatrices.multiplyByScalar(coupledDerivative, gammaPsi);
+
+
+            changeBuffer = GammaMatrices.multiplyByScalar(new ComplexNumber(0, 1), changeBuffer);
+
 
             kinetic.add(GammaMatrices.multiplyByVector(psiAdjoint, changeBuffer));
-
         }
 
-
+        // Mass term
         ComplexNumber matter = new ComplexNumber(getMass() * Math.pow(Scene.c, 2) * delta, 0);
         ComplexNumber adjDotPsi = GammaMatrices.multiplyByVector(psiAdjoint, psi);
         matter.multiply(adjDotPsi);
@@ -122,6 +123,7 @@ public class Fermion{
 
         return kinetic.getRe();
     }
+
 
 
     public void updatePosition(double time) {

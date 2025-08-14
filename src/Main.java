@@ -12,16 +12,12 @@ public class Main {
 
         Electron electron = new Electron();
 
-        singleElectron scene = new singleElectron();
-
-        scene.sampleFields();
-
 
         double t = 0;
 
         double sum = 0;
 
-        double delta = 0.0001;
+        double delta = 1;
 
         while (true) {
 
@@ -43,7 +39,13 @@ public class Main {
 
             }
 
-            double dense = electron.getDiracDensity(buffer, new double[]{0,0,0,0}, delta) * delta;
+            double dense = electron.getDiracDensity(buffer, new double[]{5,0,0,0}, delta) * delta;
+
+            System.out.println(dense);
+
+            System.out.println(electron.getDiracDensity(buffer, new double[]{0,0,0,0}, delta) * delta);
+
+            System.out.println("a");
 
             sum += dense;
 

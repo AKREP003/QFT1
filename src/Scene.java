@@ -72,7 +72,7 @@ public class Scene {
 
 
 
-        return f.getDiracDensity(buffer, new double[] {0,0,0,0}, timePerStep);
+        return f.getDiracDensity(buffer, new double[] {((f.positionMean[0] - 200) ) * 0.1,0,0,0}, timePerStep);
 
 
 
@@ -88,7 +88,7 @@ public class Scene {
 
         if (next.positionMean[1] >= this.lattice[0].length || 0 > next.positionMean[1]) {return;}
 
-        double nextDensity = this.density(next) + ((next.positionMean[0] - 200) ) * 0.1;
+        double nextDensity = this.density(next) ;
 
 
 
