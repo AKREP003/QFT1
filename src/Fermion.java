@@ -1,6 +1,5 @@
 import abdulfatir.jcomplexnumber.ComplexNumber;
 
-import java.util.Arrays;
 
 public class Fermion{
     
@@ -126,20 +125,15 @@ public class Fermion{
 
 
 
-    public void updatePosition(double timeStep) {
-        double[] j = getMomentumMean();
-        double[] pos = getPositionMean();
+    public void updatePosition(double time) {
+        double[] momentum = getMomentumMean();
+        double[] position = getPositionMean();
+        updateEnergy();
+        double energy = getEnergy();
 
-        if (j[0] != 0) {
-            double vx = (j[1] / j[0]) * Scene.c;
-            double vy = (j[2] / j[0]) * Scene.c;
+        setPositionMean(0, position[0] + ((momentum[1] * Math.pow(Scene.c, 2)) / energy) * time);
+        setPositionMean(1, position[1] + ((momentum[2] * Math.pow(Scene.c, 2)) / energy) * time);
 
-            pos[0] += vx * timeStep;
-            pos[1] += vy * timeStep;
-        }
-
-        setPositionMean(0, pos[0]);
-        setPositionMean(1, pos[1]);
     }
 
     public static double sample(double mu, double sigma) {
@@ -156,8 +150,6 @@ public class Fermion{
     public Fermion measure() {
 
         Fermion buffer = this.clone();
-
-        double[] positionBuffer = new double[] {0,0};
 
         buffer.uncertainty = this.uncertainty;
 

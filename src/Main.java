@@ -1,8 +1,6 @@
 
 import abdulfatir.jcomplexnumber.ComplexNumber;
-import processing.core.PApplet;
 
-import java.util.Arrays;
 
 
 public class Main {

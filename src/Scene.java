@@ -1,5 +1,7 @@
 import abdulfatir.jcomplexnumber.ComplexNumber;
 
+import java.rmi.MarshalException;
+
 public class Scene {
 
     public Fermion[] fields = new Fermion[0];
@@ -73,7 +75,7 @@ public class Scene {
 
         }
 
-        return f.getDiracDensity(buffer, new double[] {Math.pow(f.positionMean[0] - 200, 2) * -0.00005,0,0,0}, timePerStep);
+        return f.getDiracDensity(buffer, new double[] {0,0,0,0}, timePerStep);
 
 
 
@@ -96,6 +98,8 @@ public class Scene {
         double action = current + (Math.min(current, nextDensity) * timePerStep) + (Math.abs(current - nextDensity) / 2);
 
         ComplexNumber amplitude = feynman(action);
+
+        //System.out.println(amplitude);
 
         if (this.lattice[(int)next.positionMean[0]][(int) next.positionMean[1]] == null) {
 
