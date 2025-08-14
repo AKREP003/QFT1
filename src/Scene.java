@@ -73,9 +73,7 @@ public class Scene {
 
         }
 
-
-
-        return f.getDiracDensity(buffer, new double[] {((f.positionMean[0] - 200) ) * 0.1,0,0,0}, timePerStep);
+        return f.getDiracDensity(buffer, new double[] {Math.pow(f.positionMean[0] - 200, 2) * -0.00005,0,0,0}, timePerStep);
 
 
 
