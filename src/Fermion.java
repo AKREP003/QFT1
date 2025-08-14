@@ -126,18 +126,20 @@ public class Fermion{
 
 
 
-    public void updatePosition(double time) {
+    public void updatePosition(double timeStep) {
+        double[] j = getMomentumMean();
+        double[] pos = getPositionMean();
 
-        double[] momentum = getMomentumMean();
-        double[] position = getPositionMean();
+        if (j[0] != 0) {
+            double vx = (j[1] / j[0]) * Scene.c;
+            double vy = (j[2] / j[0]) * Scene.c;
 
-        updateEnergy();
+            pos[0] += vx * timeStep;
+            pos[1] += vy * timeStep;
+        }
 
-        double energy = getEnergy();
-
-        setPositionMean(0, position[0] + ((momentum[1] * Math.pow(Scene.c, 2)) / energy) * time);
-        setPositionMean(1, position[1] + ((momentum[2] * Math.pow(Scene.c, 2)) / energy) * time);
-
+        setPositionMean(0, pos[0]);
+        setPositionMean(1, pos[1]);
     }
 
     public static double sample(double mu, double sigma) {
@@ -162,7 +164,7 @@ public class Fermion{
         double positionDev = buffer.uncertainty * Scene.scale;
         double momentumDev = (Scene.planck / (2.0 * this.uncertainty)) * Scene.scale;
 
-        buffer.momentumMean[0] = sample(this.momentumMean[0], momentumDev);
+
         buffer.momentumMean[1] = sample(this.momentumMean[1], momentumDev);
         buffer.momentumMean[2] = sample(this.momentumMean[2], momentumDev);
         buffer.momentumMean[3] = sample(this.momentumMean[3], momentumDev);
@@ -171,7 +173,18 @@ public class Fermion{
         buffer.positionMean[1] = sample(buffer.positionMean[1], positionDev);
 
         return buffer;
-
     }
+
+    public void updateMomentumMean() {
+        ComplexNumber[] psi = getComponents();
+        ComplexNumber[] psiAdjoint = GammaMatrices.getAdjoint(psi);
+
+        for (int mu = 0; mu < 3; mu++) {
+            ComplexNumber[] gammaPsi = GammaMatrices.multiplyByMatrix(psi, GammaMatrices.gamma[mu]);
+            this.momentumMean[mu] = GammaMatrices.multiplyByVector(psiAdjoint, gammaPsi).getRe();
+        }
+    }
+
+
 
 }
