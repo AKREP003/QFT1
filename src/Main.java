@@ -15,7 +15,7 @@ public class Main {
 
         double sum = 0;
 
-        double delta = 1;
+        double delta = 0.00001;
 
         while (true) {
 
@@ -37,7 +37,7 @@ public class Main {
 
             }
 
-            double dense = electron.getDiracDensity(buffer, new double[]{5,0,0,0}, delta) * delta;
+            double dense = electron.getDiracDensity(buffer, new double[]{1,0,0,0}, delta) * delta;
 
             System.out.println(dense);
 

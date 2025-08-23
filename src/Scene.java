@@ -6,9 +6,8 @@ public class Scene {
 
     public Fermion[] fields = new Fermion[0];
 
-    public static double timePerStep = 0.9;
+    public static double timePerStep = 1;
     public static double scale = 10;
-
     public double time = 0;
 
     public static int planck = 2;
@@ -75,8 +74,12 @@ public class Scene {
 
         }
 
-        return f.getDiracDensity(buffer, new double[] {0,0,0,0}, timePerStep);
+        double eMIntensity = (f.positionMean[0] - 200) * 0.05;
 
+        double d = f.getDiracDensity(buffer, new double[] {eMIntensity,0,0,0}, timePerStep);
+
+
+        return d;
 
 
     }
