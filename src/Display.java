@@ -14,7 +14,7 @@ public class Display extends PApplet{
     }
 
     public void draw() {
-        background(color(0));
+        background(color(255));
 
         this.scene.time = 0;
 

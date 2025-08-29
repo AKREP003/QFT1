@@ -74,7 +74,7 @@ public class Scene {
 
         }
 
-        double eMIntensity = (f.positionMean[0] - 200) * 0.05;
+        double eMIntensity = (f.positionMean[0] - 200) * 0.07;
 
         double d = f.getDiracDensity(buffer, new double[] {eMIntensity,0,0,0}, timePerStep);
 
