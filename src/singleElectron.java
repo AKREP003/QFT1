@@ -14,7 +14,6 @@ public class singleElectron extends Scene
 
         this.fields[0].positionMean = new double[] {200, 200};
 
-
     }
 
 }

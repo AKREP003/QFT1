@@ -154,28 +154,18 @@ public class Fermion{
         buffer.uncertainty = this.uncertainty;
 
         double positionDev = buffer.uncertainty * Scene.scale;
-        double momentumDev = (Scene.planck / (2.0 * this.uncertainty)) * Scene.scale;
 
-
-        buffer.momentumMean[1] = sample(this.momentumMean[1], momentumDev);
-        buffer.momentumMean[2] = sample(this.momentumMean[2], momentumDev);
-        buffer.momentumMean[3] = sample(this.momentumMean[3], momentumDev);
 
         buffer.positionMean[0] = sample(buffer.positionMean[0], positionDev);
         buffer.positionMean[1] = sample(buffer.positionMean[1], positionDev);
 
+        buffer.momentumMean[1] = (this.positionMean[0] - buffer.positionMean[0]) / (Scene.scale * Scene.timePerStep);
+        buffer.momentumMean[2] = (this.positionMean[1] - buffer.positionMean[1]) / (Scene.scale * Scene.timePerStep);
+
         return buffer;
     }
 
-    public void updateMomentumMean() {
-        ComplexNumber[] psi = getComponents();
-        ComplexNumber[] psiAdjoint = GammaMatrices.getAdjoint(psi);
 
-        for (int mu = 0; mu < 3; mu++) {
-            ComplexNumber[] gammaPsi = GammaMatrices.multiplyByMatrix(psi, GammaMatrices.gamma[mu]);
-            this.momentumMean[mu] = GammaMatrices.multiplyByVector(psiAdjoint, gammaPsi).getRe();
-        }
-    }
 
 
 

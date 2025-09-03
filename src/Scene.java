@@ -63,9 +63,6 @@ public class Scene {
 
         evolveSpin(this.time, f);
 
-        f.updateMomentumMean();
-        f.updatePosition(timePerStep);
-
         for (int i = 0; i < 4; i++) {
 
             buffer[i].subtract(f.components[i]);
